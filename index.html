@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TemplateVerse - Marketplace Template Terbesar & Terpercaya</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Temukan ribuan template profesional untuk karier, pendidikan, bisnis, desain, dan produktivitas di TemplateVerse.">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom Style CSS -->
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html" onclick="resetFilters(); return false;">
+                <i class="fa-solid fa-cubes-stack text-primary"></i> TemplateVerse
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Search bar in navbar -->
+                <form class="d-flex mx-auto col-lg-5 col-md-8 my-2 my-lg-0" id="navbarSearchForm">
+                    <div class="input-group w-100" style="border-radius: 24px; overflow: hidden; border: 1.5px solid var(--gray-200);">
+                        <input class="form-control border-0 px-3 bg-light" type="search" placeholder="Cari template yang kamu butuhkan..." aria-label="Search" style="font-size: 13.5px; outline: none;">
+                        <button class="btn btn-primary border-0 bg-primary px-3 text-white" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </form>
+
+                <ul class="navbar-nav mb-2 mb-lg-0 align-items-center gap-2">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Kategori
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-lg mt-2" id="headerCategoryMenu">
+                            <!-- Injected dynamically by script.js -->
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#templates-section" onclick="resetFilters();">Templates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#membership-section">Langganan</a>
+                    </li>
+                    
+                    <!-- Wishlist & Cart icons for user -->
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link position-relative px-2" href="#" onclick="openUserDashboardModal(); return false;" title="Wishlist">
+                            <i class="fa-regular fa-heart fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="wishlistCountBadge" style="font-size: 9px; display: none;">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative px-2 me-lg-3" href="#" onclick="openCartModal(); return false;" title="Keranjang">
+                            <i class="fa-solid fa-cart-shopping fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCountBadge" style="font-size: 9px; display: none;">0</span>
+                        </a>
+                    </li>
+
+                    <!-- User Profile Dropdown Container -->
+                    <span id="userMenuContainer" class="d-flex align-items-center">
+                        <!-- Injected dynamically by script.js -->
+                    </span>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Layout -->
+    <div class="marketplace-layout">
+
+        <!-- ===== LEFT SIDEBAR ===== -->
+        <aside class="marketplace-sidebar d-none d-lg-flex flex-column">
+            <span class="sidebar-nav-label">Menu Utama</span>
+            
+            <span id="sidebarCategoryLinks">
+                <!-- Injected dynamically by script.js -->
+            </span>
+
+            <div class="sidebar-divider"></div>
+            <span class="sidebar-nav-label">Koleksi</span>
+
+            <a href="#" onclick="openOwnedModal(); return false;" class="sidebar-nav-item">
+                <i class="fa-solid fa-layer-group"></i> Koleksi Saya
+            </a>
+            <a href="#" onclick="openUserDashboardModal(); return false;" class="sidebar-nav-item">
+                <i class="fa-regular fa-heart"></i> Favorit Saya
+            </a>
+            <a href="#" onclick="openUserDashboardModal(); return false;" class="sidebar-nav-item">
+                <i class="fa-solid fa-rotate-left"></i> Ringkasan Akun
+            </a>
+
+            <div class="sidebar-divider"></div>
+            <span class="sidebar-nav-label">Bantuan</span>
+            <a href="#" onclick="alert('Pusat bantuan sedang dipersiapkan.')" class="sidebar-nav-item">
+                <i class="fa-regular fa-circle-question"></i> FAQ & Bantuan
+            </a>
+
+            <!-- Upgrade Card -->
+            <div class="sidebar-pro-card">
+                <h6>⭐ Upgrade ke Pro</h6>
+                <p>Akses seluruh koleksi premium tanpa batas & dapatkan update mingguan.</p>
+                <a href="#membership-section" class="btn-pro">Mulai Berlangganan</a>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="marketplace-main">
+
+            <!-- ===== HERO BANNER ===== -->
+            <section class="hero-banner">
+                <div class="hero-banner-content">
+                    <h1>Template Profesional<br>Untuk <span>Semua Kebutuhan</span></h1>
+                    <p>Temukan ribuan template berkualitas tinggi untuk pekerjaan, pendidikan, bisnis kecil, dan kreativitas digital Anda.</p>
+
+                    <form id="heroSearchForm" class="hero-search-row">
+                        <div class="hero-search-wrap">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="heroSearchInput" placeholder="Cari template (Presentasi, Proposal, CV, Invoice)...">
+                        </div>
+                        <button type="submit" class="btn-hero-search">Cari</button>
+                    </form>
+
+                    <div class="hero-feature-pills">
+                        <span class="hero-pill"><i class="fa-solid fa-wand-magic-sparkles"></i> Desain Modern</span>
+                        <span class="hero-pill"><i class="fa-solid fa-pen-to-square"></i> Mudah Diedit</span>
+                        <span class="hero-pill"><i class="fa-solid fa-bolt"></i> Siap Pakai</span>
+                    </div>
+                </div>
+
+                <div class="hero-banner-visual">
+                    <div class="hero-card-stack">
+                        <div class="hero-mini-card">
+                            <div class="mini-tag">Bisnis</div>
+                            <span>Business Proposal</span>
+                        </div>
+                        <div class="hero-mini-card">
+                            <div class="mini-tag">Presentasi</div>
+                            <span>Marketing Plan</span>
+                        </div>
+                        <div class="hero-mini-card">
+                            <div class="mini-tag">Keuangan</div>
+                            <span>Invoice Minimalist</span>
+                        </div>
+                        <div class="hero-mini-card">
+                            <div class="mini-tag">Laporan</div>
+                            <span>Annual Report 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== CATEGORY CHIPS ===== -->
+            <section id="categories-section">
+                <div class="section-header d-flex justify-content-between align-items-center mb-3">
+                    <h2 style="font-size: 19px; font-weight: 800;">Jelajahi Kategori Populer</h2>
+                    <a href="#templates-section" onclick="resetFilters();" style="font-size: 13.5px; color: var(--primary); font-weight: 700; text-decoration: none;">Lihat Semua</a>
+                </div>
+                <div class="category-chips-row" id="categoryChipsList">
+                    <!-- Injected dynamically by script.js -->
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- ===== TEMPLATES SECTION ===== -->
+            <section id="templates-section">
+                <div class="row g-4">
+                    <!-- Dynamic Filter Sidebar on left (Only shown when filter active) -->
+                    <div class="col-lg-3 mb-4" id="filterSidebarCol" style="display: none;">
+                        <div id="filterCardContainer">
+                            <!-- Injected dynamically by script.js -->
+                        </div>
+                    </div>
+
+                    <!-- Main template list area on right -->
+                    <div class="col-12" id="templatesListCol">
+                        <div class="section-header d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                            <div>
+                                <h2 style="font-size: 20px; font-weight: 800;" id="sectionTitleText">Semua Template Terlaris</h2>
+                                <p class="text-muted m-0 mt-1" style="font-size: 13px;" id="templateResultCount">Menampilkan 7 template berkualitas tinggi</p>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <label for="sortSelector" class="small text-muted text-nowrap m-0">Urutkan:</label>
+                                <select class="form-select form-select-sm border-gray" id="sortSelector" style="width: auto; border-radius: 8px;">
+                                    <option value="popular">Paling Populer</option>
+                                    <option value="price-asc">Harga Terendah</option>
+                                    <option value="price-desc">Harga Tertinggi</option>
+                                    <option value="rating">Rating Tertinggi</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Template Grid Cards -->
+                        <div class="row g-4" id="templatesGrid">
+                            <!-- Injected dynamically by script.js -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- ===== PROMO BANNERS ===== -->
+            <div class="promo-banners-row">
+                <div class="promo-banner promo-banner-bundle">
+                    <div class="promo-banner-content">
+                        <h5>Bundle Hemat Produktif</h5>
+                        <p>Dapatkan lebih banyak template dengan paket harga hemat. Sangat cocok untuk tim dan startup.</p>
+                        <a href="#membership-section" class="btn-promo-bundle">Lihat Paket</a>
+                    </div>
+                    <div class="promo-badge-save">
+                        <span class="save-text">Hemat</span>
+                        <span class="save-num">60%</span>
+                    </div>
+                </div>
+                <div class="promo-banner promo-banner-free">
+                    <div class="promo-banner-content">
+                        <h5>Download Template Gratis</h5>
+                        <p>Cobalah koleksi template gratis berlisensi personal kami untuk memulai proyek cepat Anda.</p>
+                        <a href="#templates-section" onclick="resetFilters();" class="btn-promo-free">Lihat Koleksi</a>
+                    </div>
+                    <div class="promo-free-icon">🎁</div>
+                </div>
+            </div>
+
+            <!-- ===== MEMBERSHIP BANNER ===== -->
+            <section id="membership-section" class="membership-new-banner">
+                <div class="membership-new-left">
+                    <span class="badge-access">🌟 AKSES TANPA BATAS</span>
+                    <h2>Akses Semua Template Premium Tanpa Batas</h2>
+                    <p>Mulai berlangganan membership TemplateVerse dan nikmati kebebasan mendownload seluruh koleksi template premium kami kapan saja tanpa harus membayar satuan, gratis pembaruan berkala.</p>
+                    <ul class="membership-new-features">
+                        <li><i class="fa-solid fa-circle-check"></i> Akses tanpa batas ke 1,200+ template terlaris</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Format terlengkap: DOCX, PPTX, XLSX, FIGMA, ZIP</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Dukungan bantuan prioritas 24/7</li>
+                    </ul>
+                </div>
+                <div class="membership-new-right">
+                    <div class="membership-price-card">
+                        <h5>Premium Membership</h5>
+                        <div class="price-big">Rp 49.000<span>/bulan</span></div>
+                        <div class="price-note">Batalkan kapan saja secara fleksibel. Tanpa biaya tersembunyi.</div>
+                        <button class="btn-membership-new" onclick="toggleMembership()">Mulai Berlangganan Sekarang</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== TESTIMONIALS ===== -->
+            <section class="mt-5">
+                <div class="section-header mb-4">
+                    <h2 style="font-size: 20px; font-weight: 800;">Apa Kata Pengguna Kami?</h2>
+                    <span class="text-muted" style="font-size: 13px;">Telah dipercaya oleh ribuan mahasiswa, profesional, dan pengusaha</span>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="tv-testimonial-card">
+                            <div class="tv-testimonial-stars">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="tv-testimonial-text">"Template CV ATS Friendly di sini keren banget! Saya pakai untuk apply di 3 perusahaan BUMN dan langsung dapat panggilan interview di 2 tempat. Rekomendasi banget!"</p>
+                            <div class="tv-testimonial-user">
+                                <img src="assets/default-profile.png" alt="Rifki" class="tv-testimonial-avatar">
+                                <div>
+                                    <p class="tv-testimonial-name">Rifki Pratama</p>
+                                    <span class="tv-testimonial-role">Job Seeker</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tv-testimonial-card">
+                            <div class="tv-testimonial-stars">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="tv-testimonial-text">"Format skripsi minimalis sangat membantu menghemat waktu penyusunan bab. Rapi banget, dosen pembimbing langsung ACC layoutnya tanpa revisi margin."</p>
+                            <div class="tv-testimonial-user">
+                                <img src="assets/default-profile.png" alt="Dinda" class="tv-testimonial-avatar">
+                                <div>
+                                    <p class="tv-testimonial-name">Dinda Ayu</p>
+                                    <span class="tv-testimonial-role">Mahasiswa Akhir</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tv-testimonial-card">
+                            <div class="tv-testimonial-stars">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="tv-testimonial-text">"Invoice bisnis dan laporan keuangan Excel sangat praktis. Dilengkapi fungsi rumus otomatis, jadi sangat memudahkan operasional toko online saya."</p>
+                            <div class="tv-testimonial-user">
+                                <img src="assets/default-profile.png" alt="Amelia" class="tv-testimonial-avatar">
+                                <div>
+                                    <p class="tv-testimonial-name">Amelia Putri</p>
+                                    <span class="tv-testimonial-role">Pemilik UMKM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== NEWSLETTER ===== -->
+            <div class="newsletter-section">
+                <h3>Dapatkan Update Template Terbaru</h3>
+                <p>Berlangganan newsletter gratis untuk mendapatkan info rilis template gratis baru dan diskon paket membership setiap minggu.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Masukkan alamat email kamu...">
+                    <button type="button" id="newsletterSubmit"><i class="fa-solid fa-paper-plane me-2"></i>Berlangganan</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="custom-footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-white"><i class="fa-solid fa-cubes-stack text-primary me-2"></i> TemplateVerse</h5>
+                    <p class="mt-3">TemplateVerse adalah platform terpercaya penyedia berbagai macam template digital siap pakai untuk menunjang produktivitas, karir, bisnis, dan akademik Anda.</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="#" class="text-secondary fs-4 hover-white"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="text-secondary fs-4 hover-white"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="text-secondary fs-4 hover-white"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="text-secondary fs-4 hover-white"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Kategori</h5>
+                    <ul class="footer-links">
+                        <li><a href="#templates-section" onclick="filterByCategory(1)">Karier & Profesional</a></li>
+                        <li><a href="#templates-section" onclick="filterByCategory(2)">Pendidikan</a></li>
+                        <li><a href="#templates-section" onclick="filterByCategory(3)">Bisnis</a></li>
+                        <li><a href="#templates-section" onclick="filterByCategory(4)">Desain</a></li>
+                        <li><a href="#templates-section" onclick="filterByCategory(5)">Produktivitas</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Dukungan & FAQ</h5>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="alert('Cara Pembelian simulator: Masukkan item ke keranjang lalu klik tombol Checkout di keranjang belanja.')">Cara Pembelian</a></li>
+                        <li><a href="#membership-section">Paket Membership</a></li>
+                        <li><a href="#" onclick="alert('Pertanyaan Umum (FAQ) simulator.')">Pertanyaan Umum (FAQ)</a></li>
+                        <li><a href="#" onclick="alert('Syarat & ketentuan lisensi.')">Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Hubungi Kami</h5>
+                    <p><i class="fa-solid fa-envelope text-primary me-2"></i> support@templateverse.com</p>
+                    <p><i class="fa-solid fa-phone text-primary me-2"></i> +62 812-3456-7890</p>
+                    <p><i class="fa-solid fa-location-dot text-primary me-2"></i> Jakarta, Indonesia</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="m-0">&copy; 2026 TemplateVerse. Hak Cipta Dilindungi Undang-Undang.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- MODALS SECTION -->
+    <!-- ========================================== -->
+
+    <!-- Product Detail Modal -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title" id="detailModalTitle">Detail Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="detailModalBody">
+                    <!-- Content injected by script.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title"><i class="fa-solid fa-cart-shopping me-2 text-primary"></i>Keranjang Belanja</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="cartModalBody">
+                    <!-- Content injected by script.js -->
+                </div>
+                <div class="modal-footer" id="cartModalFooter">
+                    <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Lanjutkan Belanja</button>
+                    <button type="button" class="btn btn-primary-grad fw-bold" id="checkoutBtn"><i class="fa-solid fa-credit-card me-2"></i>Checkout Sekarang</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Owned Templates Modal -->
+    <div class="modal fade" id="ownedModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title"><i class="fa-solid fa-layer-group me-2 text-primary"></i>Koleksi Template Saya</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="ownedModalBody">
+                    <!-- Content injected by script.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard Modal -->
+    <div class="modal fade" id="userDashboardModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title"><i class="fa-regular fa-id-card me-2 text-primary"></i>Dashboard Akun</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="userDashboardModalBody">
+                    <!-- Content injected by script.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- TemplateVerse Script -->
+    <script src="script.js"></script>
+</body>
+</html>
