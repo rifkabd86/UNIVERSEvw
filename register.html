@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - TemplateVerse{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card shadow-lg border-0" style="border-radius: var(--border-radius-lg);">
+                    <div class="text-center mb-4">
+                        <a href="{{ url_for('index') }}" class="navbar-brand justify-content-center mb-2 fs-2">
+                            <i class="fa-solid fa-cubes-stack"></i> TemplateVerse
+                        </a>
+                        <h4 class="mt-3 font-poppins text-dark">Daftar Akun Baru</h4>
+                        <p class="text-muted small">Mulai cari dan unduh ribuan template premium gratis dan berbayar.</p>
+                    </div>
+
+                    <form action="{{ url_for('register') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-user text-muted"></i></span>
+                                <input type="text" class="form-control bg-light border-start-0 ps-0" id="username" name="username" placeholder="Pilih username unik" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Alamat Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-envelope text-muted"></i></span>
+                                <input type="email" class="form-control bg-light border-start-0 ps-0" id="email" name="email" placeholder="contoh@email.com" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Nomor Telepon</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-phone text-muted"></i></span>
+                                <input type="text" class="form-control bg-light border-start-0 ps-0" id="phone" name="phone" placeholder="Masukkan nomor telepon/WA" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-lock text-muted"></i></span>
+                                <input type="password" class="form-control bg-light border-start-0 ps-0" id="password" name="password" placeholder="Minimal 6 karakter" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label small text-muted" for="terms">Saya menyetujui seluruh <a href="#">Syarat & Ketentuan</a> yang berlaku.</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-grad w-100 py-2.5 fs-6 mb-3">Daftar Sekarang</button>
+                    </form>
+
+                    <div class="text-center">
+                        <p class="text-muted small mb-0">Sudah punya akun? <a href="{{ url_for('login') }}" class="text-decoration-none font-weight-600">Masuk di sini</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

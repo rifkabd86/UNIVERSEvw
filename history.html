@@ -1,0 +1,56 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Riwayat Transaksi - TemplateVerse{% endblock %}
+
+{% block dashboard_content %}
+<div class="card border-0 shadow-sm p-4 bg-white" style="border-radius: var(--border-radius-md);">
+    <h4 class="font-poppins text-dark mb-4"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i> Riwayat Pembelian</h4>
+
+    {% if transactions|length > 0 %}
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr class="text-secondary small fw-bold">
+                        <th scope="col">No. Invoice</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Detail Template</th>
+                        <th scope="col" class="text-end">Total Harga</th>
+                        <th scope="col" class="text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in transactions %}
+                    <tr>
+                        <td class="fw-bold text-dark">{{ tx.invoice_number }}</td>
+                        <td>{{ tx.created_at.strftime('%d %b %Y, %H:%M') }}</td>
+                        <td>
+                            <ul class="list-unstyled m-0 p-0 small">
+                                {% for detail in tx.details %}
+                                <li class="text-dark"><i class="fa-solid fa-circle-check text-success me-1"></i> {{ detail.template.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td class="text-end fw-bold text-dark">Rp {{ "{:,.0f}".format(tx.total_price).replace(",", ".") }}</td>
+                        <td class="text-center">
+                            {% if tx.payment_status == 'completed' %}
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1.5 rounded-pill" style="font-size: 11px;">Berhasil</span>
+                            {% elif tx.payment_status == 'pending' %}
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1.5 rounded-pill" style="font-size: 11px;">Diproses</span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1.5 rounded-pill" style="font-size: 11px;">Gagal</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center py-5 text-muted small">
+            <i class="fa-solid fa-receipt fs-2 mb-2 text-secondary d-block"></i>
+            Anda belum memiliki riwayat transaksi pembelian.
+            <a href="{{ url_for('index') }}" class="btn btn-primary-grad btn-sm mt-3">Belanja Sekarang</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

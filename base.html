@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Pengguna - TemplateVerse{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm p-4" style="border-radius: var(--border-radius-md);">
+                <div class="text-center mb-4">
+                    <img src="{{ current_user.photo_url or '/static/images/default-profile.png' }}" class="rounded-circle border border-3 border-light shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+                    <h5 class="mt-3 text-dark font-poppins mb-1">{{ current_user.username }}</h5>
+                    <span class="badge {{ 'bg-warning text-dark' if current_user.membership == 'premium' else 'bg-secondary text-white' }} px-3 py-1.5 rounded-pill small" style="font-size: 11px;">
+                        {{ 'Premium Member' if current_user.membership == 'premium' else 'Free Account' }}
+                    </span>
+                </div>
+
+                <div class="list-group list-group-flush" style="font-size: 14px;">
+                    <a href="{{ url_for('user_dashboard') }}" class="list-group-item list-group-item-action border-0 px-3 py-2.5 rounded d-flex align-items-center gap-2.5 {% if request.path == url_for('user_dashboard') %}active bg-primary-subtle text-primary fw-semibold{% endif %}">
+                        <i class="fa-solid fa-gauge"></i> Dashboard Overview
+                    </a>
+                    <a href="{{ url_for('user_templates') }}" class="list-group-item list-group-item-action border-0 px-3 py-2.5 rounded d-flex align-items-center gap-2.5 {% if request.path == url_for('user_templates') %}active bg-primary-subtle text-primary fw-semibold{% endif %}">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Template Saya
+                    </a>
+                    <a href="{{ url_for('user_wishlist') }}" class="list-group-item list-group-item-action border-0 px-3 py-2.5 rounded d-flex align-items-center gap-2.5 {% if request.path == url_for('user_wishlist') %}active bg-primary-subtle text-primary fw-semibold{% endif %}">
+                        <i class="fa-solid fa-heart"></i> Wishlist
+                    </a>
+                    <a href="{{ url_for('user_history') }}" class="list-group-item list-group-item-action border-0 px-3 py-2.5 rounded d-flex align-items-center gap-2.5 {% if request.path == url_for('user_history') %}active bg-primary-subtle text-primary fw-semibold{% endif %}">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Transaksi
+                    </a>
+                    <a href="{{ url_for('membership') }}" class="list-group-item list-group-item-action border-0 px-3 py-2.5 rounded d-flex align-items-center gap-2.5 {% if request.path == url_for('membership') %}active bg-primary-subtle text-primary fw-semibold{% endif %}">
+                        <i class="fa-solid fa-crown"></i> Membership
+                    </a>
+                    <a href="{{ url_for('user_profile') }}" class="list-group-item list-group-item-action border-0 px-3 py-2.5 rounded d-flex align-items-center gap-2.5 {% if request.path == url_for('user_profile') %}active bg-primary-subtle text-primary fw-semibold{% endif %}">
+                        <i class="fa-solid fa-user-gear"></i> Profil Saya
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action border-0 px-3 py-2.5 text-danger rounded d-flex align-items-center gap-2.5">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content Column -->
+        <div class="col-lg-9">
+            {% block dashboard_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

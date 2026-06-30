@@ -1,0 +1,119 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Upload Template Baru - TemplateVerse{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+    <div class="panel-header">
+        <h5 class="panel-title"><i class="fa-solid fa-cloud-arrow-up text-primary me-2"></i> Form Upload Template</h5>
+    </div>
+
+    <form action="{{ url_for('admin_upload') }}" method="POST" enctype="multipart/form-data">
+        <div class="row g-4">
+            <!-- Form Details -->
+            <div class="col-lg-8">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nama Template</label>
+                    <input type="text" class="form-control form-control-custom" id="name" name="name" placeholder="Contoh: CV ATS Friendly Professional" required>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="category" class="form-label">Kategori</label>
+                        <select class="form-select form-control-custom" id="category" name="category" required>
+                            <option value="">Pilih Kategori</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="subcategory" class="form-label">Subkategori</label>
+                        <select class="form-select form-control-custom" id="subcategory" name="subcategory" required>
+                            <option value="">Pilih Subkategori</option>
+                            <!-- Updated dynamically via JavaScript -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="price" class="form-label">Harga (Rp)</label>
+                        <input type="number" class="form-control form-control-custom" id="price" name="price" placeholder="Contoh: 25000 (0 untuk Gratis)" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="file_format" class="form-label">Format File</label>
+                        <input type="text" class="form-control form-control-custom" id="file_format" name="file_format" placeholder="Contoh: DOCX, PDF" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Deskripsi Template</label>
+                    <textarea class="form-control form-control-custom" id="description" name="description" rows="5" placeholder="Tuliskan kegunaan, kelebihan, dan detail template..." required></textarea>
+                </div>
+            </div>
+
+            <!-- Upload Files -->
+            <div class="col-lg-4">
+                <div class="card p-3 mb-3 bg-light border-0">
+                    <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-image me-1"></i> Aset Thumbnail</h6>
+                    <div class="mb-3">
+                        <label for="thumbnail" class="form-label small">Pilih Gambar Preview</label>
+                        <input class="form-control form-control-sm" type="file" id="thumbnail" name="thumbnail" accept="image/*" required>
+                        <div class="form-text small">Rekomendasi rasio 4:3 (JPEG, PNG, max 2MB).</div>
+                    </div>
+                </div>
+
+                <div class="card p-3 bg-light border-0">
+                    <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-file-zipper me-1"></i> File Template</h6>
+                    <div class="mb-3">
+                        <label for="template_file" class="form-label small">Unggah File Asli</label>
+                        <input class="form-control form-control-sm" type="file" id="template_file" name="template_file" required>
+                        <div class="form-text small">File terkompresi ZIP/RAR atau berkas dokumen utama (docx, xlsx, pptx, pdf, max 16MB).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-top pt-4 mt-4 d-flex justify-content-end gap-2">
+            <a href="{{ url_for('admin_products') }}" class="btn btn-light px-4 py-2 border">Batal</a>
+            <button type="submit" class="btn btn-primary-grad px-5 py-2">Publikasikan Template</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const categorySelect = document.getElementById("category");
+    const subcategorySelect = document.getElementById("subcategory");
+
+    // Dynamic category to subcategory mapping data
+    const subcategoriesData = {
+        {% for cat in categories %}
+            "{{ cat.id }}": [
+                {% for sub in cat.subcategories %}
+                    { "id": "{{ sub.id }}", "name": "{{ sub.name }}" },
+                {% endfor %}
+            ],
+        {% endfor %}
+    };
+
+    categorySelect.addEventListener("change", function () {
+        const catId = this.value;
+        // Reset subcategories
+        subcategorySelect.innerHTML = '<option value="">Pilih Subkategori</option>';
+
+        if (catId && subcategoriesData[catId]) {
+            subcategoriesData[catId].forEach(sub => {
+                const opt = document.createElement("option");
+                opt.value = sub.id;
+                opt.textContent = sub.name;
+                subcategorySelect.appendChild(opt);
+            });
+        }
+    });
+});
+</script>
+{% endblock %}

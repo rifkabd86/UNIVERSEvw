@@ -1,0 +1,123 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Kelola Produk - TemplateVerse{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+    <div class="panel-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <h5 class="panel-title"><i class="fa-solid fa-folder-open text-primary me-2"></i> Daftar Produk Template</h5>
+        <a href="{{ url_for('admin_upload') }}" class="btn btn-primary-grad btn-sm"><i class="fa-solid fa-plus me-1"></i> Upload Template Baru</a>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="row g-3 my-2 align-items-center">
+        <div class="col-md-6">
+            <form action="{{ url_for('admin_products') }}" method="GET" class="d-flex gap-2">
+                <input type="text" name="search" class="form-control form-control-custom" placeholder="Cari nama template..." value="{{ request.args.get('search', '') }}">
+                <button type="submit" class="btn btn-primary-grad px-4">Cari</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="table-custom-wrapper">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Gambar</th>
+                    <th>Nama Template</th>
+                    <th>Subkategori</th>
+                    <th>Harga</th>
+                    <th class="text-center">Penjualan</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-end">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if templates|length > 0 %}
+                    {% for template in templates %}
+                    <tr>
+                        <td>
+                            <img src="{{ template.thumbnail_url or '/static/uploads/thumbnails/cv_ats_friendly.png' }}" class="rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                        </td>
+                        <td>
+                            <div class="fw-bold text-dark">{{ template.name }}</div>
+                            <span class="text-muted small">Format: {{ template.file_format }}</span>
+                        </td>
+                        <td>{{ template.subcategory.name }}</td>
+                        <td class="fw-semibold text-primary">Rp {{ "{:,.0f}".format(template.price).replace(",", ".") }}</td>
+                        <td class="text-center fw-bold">{{ template.sales_count }}</td>
+                        <td class="text-center">
+                            {% if template.status == 'active' %}
+                                <span class="badge-status badge-success">Aktif</span>
+                            {% else %}
+                                <span class="badge-status badge-danger">Nonaktif</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end gap-2">
+                                <!-- Quick action edit/delete -->
+                                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal{{ template.id }}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                
+                                <form action="{{ url_for('admin_delete_product', template_id=template.id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus template ini?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Edit Modal for this specific product -->
+                    <div class="modal fade" id="editModal{{ template.id }}" tabindex="-1" aria-labelledby="editModalLabel{{ template.id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content border-0 shadow-lg" style="border-radius: var(--border-radius-lg);">
+                                <div class="modal-header">
+                                    <h5 class="modal-title font-poppins text-dark fw-bold" id="editModalLabel{{ template.id }}"><i class="fa-solid fa-pen-to-square text-primary me-2"></i> Edit Template</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ url_for('admin_edit_product', template_id=template.id) }}" method="POST">
+                                    <div class="modal-body p-4 text-start">
+                                        <div class="mb-3">
+                                            <label for="edit_name{{ template.id }}" class="form-label">Nama Template</label>
+                                            <input type="text" class="form-control form-control-custom" id="edit_name{{ template.id }}" name="name" value="{{ template.name }}" required>
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label for="edit_price{{ template.id }}" class="form-label">Harga (Rp)</label>
+                                                <input type="number" class="form-control form-control-custom" id="edit_price{{ template.id }}" name="price" value="{{ template.price|int }}" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="edit_status{{ template.id }}" class="form-label">Status</label>
+                                                <select class="form-select form-control-custom" id="edit_status{{ template.id }}" name="status" required>
+                                                    <option value="active" {% if template.status == 'active' %}selected{% endif %}>Aktif</option>
+                                                    <option value="inactive" {% if template.status == 'inactive' %}selected{% endif %}>Nonaktif</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="edit_desc{{ template.id }}" class="form-label">Deskripsi</label>
+                                            <textarea class="form-control form-control-custom" id="edit_desc{{ template.id }}" name="description" rows="4" required>{{ template.description }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-top-0">
+                                        <button type="button" class="btn btn-light border px-4" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary-grad px-4">Simpan Perubahan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-box-open fs-2 mb-2 d-block"></i>
+                            Tidak ada data template ditemukan.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

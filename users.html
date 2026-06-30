@@ -1,0 +1,92 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Kelola Pengguna - TemplateVerse{% endblock %}
+
+{% block admin_content %}
+<div class="panel">
+    <div class="panel-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <h5 class="panel-title"><i class="fa-solid fa-users text-primary me-2"></i> Manajemen Akun Pengguna</h5>
+    </div>
+
+    <!-- Search/Filter Options -->
+    <div class="row g-3 my-2 align-items-center">
+        <div class="col-md-6">
+            <form action="{{ url_for('admin_users') }}" method="GET" class="d-flex gap-2">
+                <input type="text" name="search" class="form-control form-control-custom" placeholder="Cari nama atau email pengguna..." value="{{ request.args.get('search', '') }}">
+                <button type="submit" class="btn btn-primary-grad px-4">Cari</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="table-custom-wrapper">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Pengguna</th>
+                    <th>Email</th>
+                    <th>No. Telp</th>
+                    <th>Membership</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-end">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if users|length > 0 %}
+                    {% for user in users %}
+                    <tr>
+                        <td>#{{ user.id }}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2.5">
+                                <img src="{{ user.photo_url or '/static/images/default-profile.png' }}" class="rounded-circle border" style="width: 32px; height: 32px; object-fit: cover;">
+                                <div class="fw-bold text-dark">{{ user.username }}</div>
+                            </div>
+                        </td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone or '-' }}</td>
+                        <td>
+                            {% if user.membership == 'premium' %}
+                                <span class="badge bg-warning text-dark"><i class="fa-solid fa-crown me-1"></i> Premium</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Free</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if user.status == 'active' %}
+                                <span class="badge-status badge-success">Aktif</span>
+                            {% else %}
+                                <span class="badge-status badge-danger">Nonaktif</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if user.role != 'admin' %}
+                                <div class="d-flex justify-content-end gap-2">
+                                    {% if user.status == 'active' %}
+                                        <form action="{{ url_for('admin_toggle_user', user_id=user.id) }}" method="POST">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger px-3 py-1.5"><i class="fa-solid fa-user-slash me-1"></i> Nonaktifkan</button>
+                                        </form>
+                                    {% else %}
+                                        <form action="{{ url_for('admin_toggle_user', user_id=user.id) }}" method="POST">
+                                            <button type="submit" class="btn btn-sm btn-outline-success px-3 py-1.5"><i class="fa-solid fa-user-check me-1"></i> Aktifkan</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <span class="text-muted small fw-semibold">Super Admin</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            Tidak ada data pengguna ditemukan.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

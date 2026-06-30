@@ -1,0 +1,41 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Template Saya - TemplateVerse{% endblock %}
+
+{% block dashboard_content %}
+<div class="card border-0 shadow-sm p-4 bg-white" style="border-radius: var(--border-radius-md);">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h4 class="font-poppins text-dark m-0"><i class="fa-solid fa-cloud-arrow-down text-primary me-2"></i> Template yang Saya Beli</h4>
+        <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-custom">Beli Template Lain</a>
+    </div>
+
+    {% if templates|length > 0 %}
+        <div class="row g-4">
+            {% for template in templates %}
+            <div class="col-md-6 col-xl-4">
+                <div class="card h-100 border rounded" style="overflow: hidden;">
+                    <img src="{{ template.thumbnail_url or '/static/uploads/thumbnails/cv_ats_friendly.png' }}" class="card-img-top" style="height: 140px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column p-3">
+                        <span class="text-primary small fw-semibold text-uppercase mb-1" style="font-size: 11px;">{{ template.subcategory.name }}</span>
+                        <h6 class="card-title text-dark fw-bold mb-2 text-truncate" title="{{ template.name }}">{{ template.name }}</h6>
+                        <p class="text-muted small mb-3">Format: {{ template.file_format }}</p>
+                        
+                        <div class="mt-auto d-grid gap-2">
+                            <a href="{{ url_for('download_template', template_id=template.id) }}" class="btn btn-success btn-sm"><i class="fa-solid fa-cloud-arrow-down me-1"></i> Download File</a>
+                            <a href="{{ url_for('product_detail', template_id=template.id) }}" class="btn btn-light btn-sm text-secondary border"><i class="fa-solid fa-star me-1 text-warning"></i> Beri Rating / Detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5 text-muted small">
+            <i class="fa-solid fa-box-open fs-2 mb-2 text-secondary d-block"></i>
+            Kamu belum membeli template apapun.
+            <p class="mt-1">Dapatkan berbagai template premium di toko kami.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary-grad mt-2">Kunjungi Marketplace</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

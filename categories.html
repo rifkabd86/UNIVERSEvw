@@ -1,0 +1,112 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Kelola Kategori - TemplateVerse{% endblock %}
+
+{% block admin_content %}
+<div class="row g-4">
+    <!-- Add Category Form -->
+    <div class="col-lg-4">
+        <div class="panel mb-4">
+            <div class="panel-header">
+                <h5 class="panel-title"><i class="fa-solid fa-folder-plus text-primary me-2"></i> Tambah Kategori</h5>
+            </div>
+            <form action="{{ url_for('admin_add_category') }}" method="POST">
+                <div class="mb-3">
+                    <label for="cat_name" class="form-label">Nama Kategori</label>
+                    <input type="text" class="form-control form-control-custom" id="cat_name" name="name" placeholder="Misal: Finansial" required>
+                </div>
+                <div class="mb-3">
+                    <label for="cat_icon" class="form-label">Ikon FontAwesome</label>
+                    <input type="text" class="form-control form-control-custom" id="cat_icon" name="icon" placeholder="Misal: fa-wallet" value="fa-folder" required>
+                    <div class="form-text small">Masukkan nama kelas FontAwesome (e.g. `fa-wallet`, `fa-graduation-cap`).</div>
+                </div>
+                <button type="submit" class="btn btn-primary-grad w-100 py-2.5">Tambah Kategori</button>
+            </form>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h5 class="panel-title"><i class="fa-solid fa-tag text-primary me-2"></i> Tambah Subkategori</h5>
+            </div>
+            <form action="{{ url_for('admin_add_subcategory') }}" method="POST">
+                <div class="mb-3">
+                    <label for="parent_category" class="form-label">Kategori Induk</label>
+                    <select class="form-select form-control-custom" id="parent_category" name="category_id" required>
+                        <option value="">Pilih Kategori Induk</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}">{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="sub_name" class="form-label">Nama Subkategori</label>
+                    <input type="text" class="form-control form-control-custom" id="sub_name" name="name" placeholder="Misal: Budget Tracker" required>
+                </div>
+                <button type="submit" class="btn btn-primary-grad w-100 py-2.5">Tambah Subkategori</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories Table -->
+    <div class="col-lg-8">
+        <div class="panel">
+            <div class="panel-header">
+                <h5 class="panel-title"><i class="fa-solid fa-tags text-primary me-2"></i> Struktur Kategori</h5>
+            </div>
+
+            <div class="table-custom-wrapper">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Ikon</th>
+                            <th>Kategori Utama</th>
+                            <th>Subkategori</th>
+                            <th class="text-end">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if categories|length > 0 %}
+                            {% for cat in categories %}
+                            <tr>
+                                <td class="text-center">
+                                    <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; font-size: 16px;">
+                                        <i class="fa-solid {{ cat.icon or 'fa-folder' }}"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-dark fs-6">{{ cat.name }}</div>
+                                    <span class="text-muted small">{{ cat.subcategories|length }} Subkategori</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-wrap gap-1.5">
+                                        {% for sub in cat.subcategories %}
+                                            <span class="badge bg-light text-dark border p-2 d-flex align-items-center gap-1.5" style="border-radius: 6px; font-size: 12px;">
+                                                {{ sub.name }}
+                                                <form action="{{ url_for('admin_delete_subcategory', subcategory_id=sub.id) }}" method="POST" class="d-inline m-0">
+                                                    <button type="submit" class="border-0 bg-transparent text-danger p-0 align-middle" style="line-height: 1;" onclick="return confirm('Hapus subkategori ini?');"><i class="fa-solid fa-circle-xmark"></i></button>
+                                                </form>
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                <td class="text-end">
+                                    <form action="{{ url_for('admin_delete_category', category_id=cat.id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini? Menghapus kategori utama akan menghapus seluruh subkategori di dalamnya.');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i> Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center py-5 text-muted">
+                                    Tidak ada data kategori.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

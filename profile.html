@@ -1,0 +1,88 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Profil Saya - TemplateVerse{% endblock %}
+
+{% block dashboard_content %}
+<div class="d-flex flex-column gap-4">
+    <!-- Profile Info Card -->
+    <div class="card border-0 shadow-sm p-4 bg-white" style="border-radius: var(--border-radius-md);">
+        <h4 class="font-poppins text-dark mb-4"><i class="fa-solid fa-user-gear text-primary me-2"></i> Pengaturan Profil</h4>
+        
+        <form action="{{ url_for('user_profile') }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="update_profile">
+            <div class="row g-4 align-items-center mb-4 pb-3 border-bottom">
+                <div class="col-sm-auto">
+                    <img src="{{ current_user.photo_url or '/static/images/default-profile.png' }}" class="rounded-circle border" style="width: 100px; height: 100px; object-fit: cover;">
+                </div>
+                <div class="col-sm">
+                    <h6 class="text-dark fw-bold mb-2">Foto Profil</h6>
+                    <input type="file" class="form-control form-control-sm bg-light" name="photo" accept="image/*" style="max-width: 300px;">
+                    <div class="form-text small">Format file: JPG, JPEG, PNG. Maksimal 2MB.</div>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control bg-light" id="username" name="username" value="{{ current_user.username }}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control bg-light" id="email" name="email" value="{{ current_user.email }}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Nomor Telepon</label>
+                        <input type="text" class="form-control bg-light" id="phone" name="phone" value="{{ current_user.phone or '' }}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Tipe Akun / Membership</label>
+                        <div class="form-control bg-light-subtle text-uppercase fw-semibold" style="cursor: not-allowed; opacity: 0.7;">
+                            {{ current_user.membership }} Membership
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary-grad px-4 py-2.5 mt-3">Simpan Perubahan</button>
+        </form>
+    </div>
+
+    <!-- Password Card -->
+    <div class="card border-0 shadow-sm p-4 bg-white" style="border-radius: var(--border-radius-md);">
+        <h5 class="font-poppins text-dark mb-4"><i class="fa-solid fa-lock text-primary me-2"></i> Ubah Password</h5>
+        
+        <form action="{{ url_for('user_profile') }}" method="POST">
+            <input type="hidden" name="action" value="update_password">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label">Password Sekarang</label>
+                        <input type="password" class="form-control bg-light" id="current_password" name="current_password" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">Password Baru</label>
+                        <input type="password" class="form-control bg-light" id="new_password" name="new_password" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Konfirmasi Password Baru</label>
+                        <input type="password" class="form-control bg-light" id="confirm_password" name="confirm_password" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary-grad px-4 py-2.5 mt-3">Perbarui Password</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

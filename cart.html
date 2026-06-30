@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Keranjang Belanja - TemplateVerse{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h3 class="font-poppins text-dark mb-4"><i class="fa-solid fa-cart-shopping text-primary me-2"></i> Keranjang Belanja Anda</h3>
+
+    {% if cart_items|length > 0 %}
+        <div class="row g-4">
+            <!-- Items Column -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm p-4 bg-white mb-4" style="border-radius: var(--border-radius-md);">
+                    <div class="table-responsive">
+                        <table class="table align-middle m-0">
+                            <thead>
+                                <tr class="text-secondary small fw-bold">
+                                    <th scope="col">Produk</th>
+                                    <th scope="col" class="text-end">Harga</th>
+                                    <th scope="col" class="text-end">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img src="{{ item.template.thumbnail_url or '/static/uploads/thumbnails/cv_ats_friendly.png' }}" class="rounded border" style="width: 70px; height: 70px; object-fit: cover;">
+                                            <div>
+                                                <h6 class="text-dark fw-semibold m-0" style="font-size: 15px;">{{ item.template.name }}</h6>
+                                                <span class="text-primary small" style="font-size: 12px;">{{ item.template.subcategory.name }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-end fw-bold text-dark">
+                                        Rp {{ "{:,.0f}".format(item.template.price).replace(",", ".") }}
+                                    </td>
+                                    <td class="text-end">
+                                        <form action="{{ url_for('remove_from_cart', cart_id=item.id) }}" method="POST">
+                                            <button type="submit" class="btn btn-sm btn-link text-danger text-decoration-none" title="Hapus Item"><i class="fa-solid fa-trash-can fs-5"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Column -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm p-4 bg-white mb-4" style="border-radius: var(--border-radius-md);">
+                    <h5 class="font-poppins text-dark mb-3">Ringkasan Pesanan</h5>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-secondary">Subtotal ({{ cart_items|length }} item)</span>
+                        <span class="fw-semibold text-dark">Rp {{ "{:,.0f}".format(total_price).replace(",", ".") }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-secondary">Diskon</span>
+                        <span class="text-success fw-semibold">Rp 0</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="text-dark fw-bold">Total Pembayaran</span>
+                        <h4 class="text-primary font-poppins m-0 fw-bold">Rp {{ "{:,.0f}".format(total_price).replace(",", ".") }}</h4>
+                    </div>
+
+                    {% if total_price > 0 %}
+                    <!-- Payment instructions and Proof upload form -->
+                    <div class="bg-light p-3 rounded mb-4" style="font-size: 13px;">
+                        <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-building-columns text-primary me-1"></i> Metode Pembayaran: Bank Transfer</h6>
+                        <p class="m-0 text-secondary">Silakan transfer pembayaran ke rekening berikut:</p>
+                        <div class="fw-bold text-dark mt-2">Bank BCA</div>
+                        <div class="fs-6 fw-bold text-primary my-1">123-456-7890</div>
+                        <div class="text-dark">a.n. TemplateVerse Indonesia</div>
+                    </div>
+                    {% endif %}
+
+                    <form action="{{ url_for('checkout_cart') }}" method="POST" enctype="multipart/form-data">
+                        {% if total_price > 0 %}
+                        <div class="mb-4">
+                            <label for="payment_proof" class="form-label small fw-bold text-secondary">Unggah Bukti Transfer (Gambar)</label>
+                            <input class="form-control form-control-sm" type="file" id="payment_proof" name="payment_proof" accept="image/*" required>
+                            <div class="form-text small text-muted">Format yang didukung: JPG, JPEG, PNG. Maksimal 2MB.</div>
+                        </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-primary-grad w-100 py-3 font-poppins">
+                            <i class="fa-solid fa-lock me-2"></i> {% if total_price > 0 %}Konfirmasi & Selesaikan{% else %}Dapatkan Sekarang{% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center py-5 bg-white border rounded" style="border-radius: var(--border-radius-md);">
+            <i class="fa-solid fa-cart-arrow-down text-muted display-3 mb-3"></i>
+            <h4 class="text-dark">Keranjang Belanja Kosong</h4>
+            <p class="text-muted">Kamu belum menambahkan template ke keranjang belanja.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary-grad mt-2">Belanja Sekarang</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

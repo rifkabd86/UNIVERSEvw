@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}Membership - TemplateVerse{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <span class="hero-badge"><i class="fa-solid fa-crown me-2"></i> Paket Keanggotaan</span>
+        <h1 class="font-poppins text-dark fw-bold">Pilih Paket TemplateVerse Anda</h1>
+        <p class="text-muted fs-5">Dapatkan akses penuh ke seluruh aset template digital premium tanpa batas unduhan.</p>
+    </div>
+
+    <!-- Pricing Comparison Section -->
+    <div class="row justify-content-center g-4 mb-5">
+        <!-- Free Plan -->
+        <div class="col-md-5 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white" style="border-radius: var(--border-radius-lg);">
+                <div class="mb-4">
+                    <h5 class="text-secondary font-poppins">Free Account</h5>
+                    <div class="font-poppins text-dark my-3" style="font-size: 32px; font-weight: 800;">Rp 0</div>
+                    <p class="text-muted small">Mulai download beberapa template bertanda gratis.</p>
+                </div>
+                <hr>
+                <ul class="list-unstyled d-flex flex-column gap-3 my-4 fs-6 text-secondary">
+                    <li><i class="fa-solid fa-check text-success me-2"></i> Hanya download template bertanda gratis</li>
+                    <li><i class="fa-solid fa-xmark text-danger me-2"></i> Akses template premium (Bayar Satuan)</li>
+                    <li><i class="fa-solid fa-xmark text-danger me-2"></i> Update berkala gratis</li>
+                    <li><i class="fa-solid fa-xmark text-danger me-2"></i> Dukungan prioritas 24/7</li>
+                </ul>
+                <div class="mt-auto">
+                    {% if current_user %}
+                        <button class="btn btn-outline-secondary w-100 py-2.5 disabled" disabled>Paket Anda Saat Ini</button>
+                    {% else %}
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-custom w-100 py-2.5">Daftar Akun Baru</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="col-md-5 col-lg-4">
+            <div class="card h-100 border-0 shadow-lg p-4 bg-white position-relative" style="border-radius: var(--border-radius-lg); border: 2px solid var(--primary-color) !important;">
+                <span class="position-absolute top-0 start-50 translate-middle badge bg-primary px-3 py-2 rounded-pill fw-semibold text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Paling Populer</span>
+                <div class="mb-4">
+                    <h5 class="text-primary font-poppins">Premium Membership</h5>
+                    <div class="font-poppins text-primary my-3" style="font-size: 32px; font-weight: 800;">Rp 49.000<span class="fs-6 text-muted font-weight-normal">/bulan</span></div>
+                    <p class="text-muted small">Akses tanpa batas ke seluruh template berkualitas.</p>
+                </div>
+                <hr>
+                <ul class="list-unstyled d-flex flex-column gap-3 my-4 fs-6 text-secondary">
+                    <li><i class="fa-solid fa-check text-success me-2"></i> <strong>Download tanpa batas</strong> 1,200+ template</li>
+                    <li><i class="fa-solid fa-check text-success me-2"></i> Format lengkap: Word, Excel, PPT, PDF, Figma</li>
+                    <li><i class="fa-solid fa-check text-success me-2"></i> Bebas download template baru setiap minggu</li>
+                    <li><i class="fa-solid fa-check text-success me-2"></i> Bantuan tim CS prioritas 24/7</li>
+                </ul>
+                <div class="mt-auto">
+                    {% if current_user %}
+                        {% if current_user.membership == 'premium' %}
+                            <button class="btn btn-success w-100 py-2.5 disabled" disabled><i class="fa-solid fa-circle-check me-2"></i> Anda Premium Member</button>
+                        {% else %}
+                            <button type="button" class="btn btn-primary-grad w-100 py-2.5" data-bs-toggle="modal" data-bs-target="#paymentModal">Upgrade Sekarang</button>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary-grad w-100 py-2.5">Login untuk Berlangganan</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Overview -->
+    <div class="text-center mt-5 pt-4">
+        <h3 class="font-poppins text-dark mb-4">Kenapa Memilih Premium?</h3>
+        <div class="row g-4 justify-content-center text-start mt-2">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100 bg-white" style="border-radius: var(--border-radius-md);">
+                    <div class="feature-badge-icon"><i class="fa-solid fa-rocket"></i></div>
+                    <h5>Akselerasi Kerja</h5>
+                    <p class="text-muted small m-0">Selesaikan tugas kantor, kuliah, atau portofolio desain Anda 10x lebih cepat dengan struktur template profesional.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100 bg-white" style="border-radius: var(--border-radius-md);">
+                    <div class="feature-badge-icon"><i class="fa-solid fa-file-shield"></i></div>
+                    <h5>Standar Industri</h5>
+                    <p class="text-muted small m-0">Seluruh template kami (seperti CV ATS friendly) telah diverifikasi kelayakannya oleh praktisi berpengalaman.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100 bg-white" style="border-radius: var(--border-radius-md);">
+                    <div class="feature-badge-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <h5>Bebas Royalti</h5>
+                    <p class="text-muted small m-0">Gunakan template untuk keperluan pribadi maupun bisnis klien tanpa perlu khawatir hak cipta.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+{% if current_user and current_user.membership != 'premium' %}
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: var(--border-radius-lg);">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title font-poppins text-dark fw-bold" id="paymentModalLabel"><i class="fa-solid fa-crown text-primary me-2"></i> Pendaftaran Premium</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="text-secondary small">Untuk mengaktifkan keanggotaan Premium Membership, silakan lakukan transfer sebesar <strong>Rp 49.000</strong> ke rekening berikut:</p>
+                
+                <div class="bg-light p-3 rounded mb-4 text-center">
+                    <div class="fw-bold text-dark">Bank BCA</div>
+                    <div class="fs-4 fw-bold text-primary my-1">123-456-7890</div>
+                    <div class="text-dark small">a.n. TemplateVerse Indonesia</div>
+                </div>
+
+                <form action="{{ url_for('upgrade_membership') }}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="membership_proof" class="form-label small fw-bold text-secondary">Unggah Bukti Transfer (Gambar)</label>
+                        <input class="form-control" type="file" id="membership_proof" name="payment_proof" accept="image/*" required>
+                        <div class="form-text small text-muted">Format file yang diperbolehkan: JPG, JPEG, PNG. Maksimal 2MB.</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary-grad w-100 py-2.5 mt-2"><i class="fa-solid fa-paper-plane me-2"></i> Kirim Bukti Transfer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
